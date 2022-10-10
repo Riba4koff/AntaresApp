@@ -1,6 +1,7 @@
 package com.example.antaresapp.domain.models
 
 data class UserInfo(
+    val rights: String ?= UserRights.User.right,
     val name: String ?= "Name",
     val surname: String ?= "Surname",
     var age: String ?= "",

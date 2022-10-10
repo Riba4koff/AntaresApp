@@ -2,7 +2,6 @@ package com.example.antaresapp.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

@@ -5,54 +5,82 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
+import androidx.navigation.NavController
+import com.example.antaresapp.domain.MenuNavigationItems
 import com.example.antaresapp.ui.theme.fontFamilyRoboto
 import com.example.antaresapp.ui.theme.myColor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(128.dp)
+            .height(64.dp)
             .background(myColor),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.CenterStart
     ) {
-        Text("Antares App", fontSize = 32.sp)
+        Text(modifier = Modifier.padding(start = 24.dp),text = "Antares App", fontSize = 24.sp)
     }
 }
 
 @Composable
 fun DrawerBody(
-    itemListData: List<DataMenuItemList>,
-    modifier: Modifier = Modifier,
-    itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (DataMenuItemList) -> Unit,
+    listOfMenuItems: List<MenuNavigationItems>,
+    openDialog : () -> Unit = {},
+    navController : NavController,
+    scope : CoroutineScope,
+    closeDrawer : () -> Unit = {}
 ) {
-    LazyColumn(modifier) {
-        items(itemListData) { item ->
+    LazyColumn{
+        items(listOfMenuItems){ item ->
+            if (item.screen_route == MenuNavigationItems.Exit.screen_route){
+                openDialog()
+            }
             Row(modifier = Modifier
                 .fillMaxWidth()
+                .padding(16.dp)
                 .clickable {
-                    onItemClick(item)
-                }
-                .padding(16.dp)) {
-                Icon(painter = item.icon, contentDescription = item.contentDescription)
+                    scope.launch {
+                        closeDrawer()
+                    }
+                    navController.navigate(item.screen_route) {
+                        navController.graph.startDestinationRoute?.let { screen_route ->
+                            popUpTo(screen_route) {
+                                saveState = false
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }, verticalAlignment = Alignment.CenterVertically) {
+                Icon(modifier = Modifier.size(30.dp),
+                    painter = painterResource(id = item.icon),
+                    contentDescription = item.description)
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = item.title,
-                    style = itemTextStyle,
-                    modifier = Modifier.weight(1f).padding(top = 12.dp),
-                    fontFamily = fontFamilyRoboto
+                    fontFamily = fontFamilyRoboto,
+                    fontSize = 18.sp
                 )
             }
+            Divider(modifier = Modifier.padding(end = 48.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
+                thickness = 1.dp)
         }
     }
 

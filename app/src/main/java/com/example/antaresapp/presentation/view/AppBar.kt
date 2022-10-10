@@ -7,7 +7,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import com.example.antaresapp.presentation.Navigation.*
+import com.example.antaresapp.domain.*
 import com.example.antaresapp.ui.theme.myColor
 
 @Composable
@@ -16,7 +16,10 @@ fun AppBar(
     currentRoute: String?
 ) {
     if (currentRoute == AddItemNews.AddNews.screen_route){}
-    else if (currentRoute == ProjectItems.InfoOfProject.screen_route)
+    else if (currentRoute == ProjectItems.InfoOfProject.screen_route){}
+    else if (currentRoute == Login.LogIn.screen_route){}
+    else if (currentRoute == Survey._Survey.screen_route){}
+    else if (currentRoute == ProjectItems.AddProjectItem.screen_route)
     else {
         TopAppBar(
             title = {
@@ -29,8 +32,7 @@ fun AppBar(
                     MenuNavigationItems.Settings.screen_route -> "Настройки"
                     MenuNavigationItems.FeedBack.screen_route -> "Обратная связь"
                     ProjectItems.InfoOfProject.screen_route -> "Информация о проекте"
-                    InterView.Interview.screen_route -> "Создать опрос"
-                    InterView.AddOptionInterview.screen_route -> "Добавить вариант"
+                    Survey._Survey.screen_route -> "Создать опрос"
                     else -> "Antares App"
                 }
                 Text(text = title)
