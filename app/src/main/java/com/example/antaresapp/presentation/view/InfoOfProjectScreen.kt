@@ -29,6 +29,7 @@ import com.example.antaresapp.R
 import com.example.antaresapp.domain.MenuNavigationItems
 import com.example.antaresapp.domain.models.TaskModel
 import com.example.antaresapp.domain.models.ProjectItem
+import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.presentation.viewModels.viewModels.InfoOfProjectViewModel
 import com.example.antaresapp.ui.theme.myColor
 import kotlinx.coroutines.delay
@@ -38,12 +39,26 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InfoOfProjectScreen(
-    modifier: Modifier = Modifier,
     navController: NavController,
     projectItem: ProjectItem,
     scaffoldState: ScaffoldState,
     infoOfProjectViewModel: InfoOfProjectViewModel = InfoOfProjectViewModel(projectItem),
 ) {
+    BodyInfoOfProjectScreen(navController = navController,
+        projectItem = projectItem,
+        scaffoldState = scaffoldState,
+        infoOfProjectViewModel = infoOfProjectViewModel)
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun BodyInfoOfProjectScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    projectItem: ProjectItem,
+    scaffoldState: ScaffoldState,
+    infoOfProjectViewModel: InfoOfProjectViewModel
+){
     var nameProject by remember { mutableStateOf(projectItem.nameProject) }
     var description by remember { mutableStateOf(projectItem.description) }
     var date by remember { mutableStateOf(projectItem.dateProject) }

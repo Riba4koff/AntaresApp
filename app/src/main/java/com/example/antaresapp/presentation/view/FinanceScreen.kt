@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,12 +14,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.antaresapp.data.RepositoryImpl.FinanceRepositoryImpl
 import com.example.antaresapp.data.storage.FinanceStorage.FinanceStorageImpl
 import com.example.antaresapp.domain.models.FinanceModel
 import com.example.antaresapp.domain.useCase.FinanceUseCase.GetListFinanceOperationsUseCase
 import com.example.antaresapp.domain.useCase.ProjectsUseCase.SaveFinanceOperationUseCase
+import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.ui.theme.fontFamilyRoboto
+import com.example.antaresapp.ui.theme.myColor
 import kotlinx.coroutines.launch
 
 private val financeStorage = FinanceStorageImpl()
@@ -28,10 +31,44 @@ private val SaveFinanceOperationUseCase = SaveFinanceOperationUseCase(financeRep
 private val GetListFinanceOperationsUseCase = GetListFinanceOperationsUseCase(financeRepository)
 
 
+@Composable
+fun FinanceScreen(scaffoldState: ScaffoldState, navController: NavController) {
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Финансы")
+                }, backgroundColor = myColor,
+                navigationIcon = {
+                    IconButton(onClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menu")
+                    }
+                }
+            )
+        }, drawerContent = {
+            DrawerNavigation(navController = navController, scope = scope, closeDrawer = {
+                scope.launch {
+                    scaffoldState.drawerState.close()
+                }
+            })
+        },
+        bottomBar = {
+            com.example.antaresapp.presentation.Navigation.BottomNavigation(navController = navController)
+        }
+    ) {
+        BodyFinanceScreen(modifier = Modifier.padding(paddingValues = it))
+    }
+}
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun FinanceScreen() {
-
+fun BodyFinanceScreen(modifier: Modifier) {
     val financeList = GetListFinanceOperationsUseCase.execute()
 
     var balance by remember { mutableStateOf(0) }
@@ -44,7 +81,7 @@ fun FinanceScreen() {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -63,7 +100,6 @@ fun FinanceScreen() {
         Balance(balance = balance)
     }
 }
-
 
 @Composable
 fun Balance(balance: Int) {
@@ -92,9 +128,6 @@ fun Balance(balance: Int) {
 
 @Composable
 fun HeaderFinanceScreen() {
-
-    val scaffoldState = rememberScaffoldState()
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,7 +188,7 @@ fun HeaderFinanceScreen() {
 }
 
 @Composable
-fun CardProfit(DataFinanceScreen : FinanceModel) {
+fun CardProfit(DataFinanceScreen: FinanceModel) {
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Card(

@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -27,6 +29,7 @@ import com.example.antaresapp.domain.ProjectItems
 import com.example.antaresapp.domain.models.ProjectItem
 import com.example.antaresapp.domain.models.UserInfo
 import com.example.antaresapp.domain.models.UserRights
+import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.presentation.viewModels.viewModels.ProjectViewModel
 import com.example.antaresapp.ui.theme.fontFamilyRoboto
 import com.example.antaresapp.ui.theme.myColor
@@ -37,11 +40,53 @@ import kotlinx.coroutines.launch
 @Composable
 fun ShowListProject(
     navController: NavController,
-    modifier: Modifier = Modifier,
     viewModel: ProjectViewModel,
-    user : UserInfo
+    user : UserInfo,
+    scaffoldState: ScaffoldState
 ){
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Проекты")
+                },
+                backgroundColor = myColor,
+                navigationIcon = {
+                    IconButton(onClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menu")
+                    }
+                }
+            )
+        },
+        drawerContent = {
+            DrawerNavigation(navController = navController, scope = scope, closeDrawer = {
+                scope.launch {
+                    scaffoldState.drawerState.close()
+                }
+            })
+        },
+        bottomBar = {
+            com.example.antaresapp.presentation.Navigation.BottomNavigation(navController = navController)
+        }
+    ) {
+        BodyProjectScreen(navController = navController, viewModel = viewModel, user = user, modifier = Modifier.padding(paddingValues = it))
+    }
+}
 
+
+@Composable
+fun BodyProjectScreen(
+    navController: NavController,
+    viewModel: ProjectViewModel,
+    user : UserInfo,
+    modifier :Modifier
+){
     val stateProjectList by viewModel.dataProjectList.observeAsState()
 
     LazyColumn(
@@ -164,4 +209,3 @@ fun OptionsProjectList(
         }
     }
 }
-
