@@ -1,9 +1,18 @@
 package com.example.antaresapp.domain.models
 
-import androidx.compose.ui.state.ToggleableState
-
 data class TaskModel(
-    var id: Int ?= 0,
-    var nameTask: String? = "Задача",
-    var state: Boolean,
+    val nameTask: String ?= "Task",
+    val description: String ?= "Task Description",
+    val creator: String ?= "nickname creator",
+    val executor: String ?= "nickname executor",
+    val timeAdding: String ?= "20.12.2020",
+    val listSubTasks: List<SubTaskModel>,
+    val progress : Float ?= 0f,
+    var complete : Boolean ?= false
+)
+
+
+data class SubTaskModel(
+    val nameSubTask : String,
+    var state: Boolean
 )

@@ -7,8 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import com.example.antaresapp.presentation.viewModels.viewModels.ProjectViewModel
-import com.example.antaresapp.presentation.viewModels.viewModels.ScreenModelsViewModel
+import com.example.antaresapp.presentation.viewModels.viewModels.*
 import com.example.antaresproject.StartApp
 
 class MainActivity : ComponentActivity() {
@@ -16,16 +15,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Вью модель с новостями и опросами
         val screenModelsViewModel: ScreenModelsViewModel by viewModels { ScreenModelsViewModel.Factory }
-        //Вью модель проектов
         val projectViewModel: ProjectViewModel by viewModels { ProjectViewModel.Factory }
+        val tasksViewModel: TasksViewModel by viewModels { TasksViewModel.Factory }
+        val subTaskViewModel : SubTaskViewModel by viewModels { SubTaskViewModel.Factory }
+        val optionListViewModel : OptionListViewModel by viewModels { OptionListViewModel.Factory }
 
         setContent {
-           StartApp(projectViewModel = projectViewModel,screenModelsViewModel = screenModelsViewModel)
-           /*InfoOfProjectScreen(navController = rememberNavController(),
-                projectItem = ProjectItem(),
-                projectViewModel = projectViewModel, rememberScaffoldState())*/
+            StartApp(projectViewModel = projectViewModel,
+                screenModelsViewModel = screenModelsViewModel,
+                tasksViewModel = tasksViewModel,
+                subTaskViewModel = subTaskViewModel,
+                optionListViewModel = optionListViewModel
+            )
+            /*InfoOfProjectScreen(navController = rememberNavController(),
+                 projectItem = ProjectItem(),
+                 projectViewModel = projectViewModel, rememberScaffoldState())*/
 
         }
 

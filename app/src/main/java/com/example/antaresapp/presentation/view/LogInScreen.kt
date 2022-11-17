@@ -17,12 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.antaresapp.domain.Login
+import com.example.antaresapp.domain.MenuNavigationItems
 import com.example.antaresapp.ui.theme.fontFamilyRoboto
 import com.example.antaresapp.ui.theme.myColor
 
 //Вход
 @Composable
 fun LogInScreen(
+    navController: NavController,
 ) {
     val focus = LocalFocusManager.current
     var logIn by remember {
@@ -100,7 +104,13 @@ fun LogInScreen(
             }
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Button(onClick = { }, colors = ButtonDefaults.buttonColors(backgroundColor = myColor)) {
+                Button(onClick = {
+                    navController.navigate(MenuNavigationItems.News.screen_route) {
+                        popUpTo(Login.LogIn.screen_route) {
+                            inclusive = true
+                        }
+                    }
+                }, colors = ButtonDefaults.buttonColors(backgroundColor = myColor)) {
                     Text(
                         text = "Войти",
                         fontFamily = fontFamilyRoboto,

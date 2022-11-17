@@ -16,8 +16,7 @@ import com.example.antaresapp.domain.models.UserRights
 import com.example.antaresapp.presentation.Navigation.BottomNavigation
 import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.presentation.Navigation.NavigationGraph
-import com.example.antaresapp.presentation.viewModels.viewModels.ProjectViewModel
-import com.example.antaresapp.presentation.viewModels.viewModels.ScreenModelsViewModel
+import com.example.antaresapp.presentation.viewModels.viewModels.*
 import kotlinx.coroutines.launch
 
 
@@ -25,22 +24,23 @@ import kotlinx.coroutines.launch
 @Composable
 fun StartApp(
     projectViewModel: ProjectViewModel,
-    screenModelsViewModel: ScreenModelsViewModel
+    screenModelsViewModel: ScreenModelsViewModel,
+    tasksViewModel: TasksViewModel,
+    subTaskViewModel: SubTaskViewModel,
+    optionListViewModel: OptionListViewModel
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val startDestination : String
 
-    /*if (user.isAutorizate){
-        startDestination = MenuNavigationItems.News.screen_route
-    }else{
-        startDestination = Login.LogIn.screen_route
-    }*/
     NavigationGraph(
         navController = navController,
         scaffoldState = scaffoldState,
         projectViewModel = projectViewModel,
+        tasksViewModel = tasksViewModel,
         screenModelsViewModel = screenModelsViewModel,
-        userInfo = UserInfo(rights = UserRights.Admin.right)
+        userInfo = UserInfo(rights = UserRights.Admin.right),
+        subTaskViewModel = subTaskViewModel,
+        optionListViewModel = optionListViewModel
     )
 }

@@ -27,9 +27,8 @@ import com.example.antaresapp.AnimationBox
 import com.example.antaresapp.MyTextField
 import com.example.antaresapp.R
 import com.example.antaresapp.domain.MenuNavigationItems
-import com.example.antaresapp.domain.models.TaskModel
+import com.example.antaresapp.domain.models.TaskModelNeTrogat
 import com.example.antaresapp.domain.models.ProjectItem
-import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.presentation.viewModels.viewModels.InfoOfProjectViewModel
 import com.example.antaresapp.ui.theme.myColor
 import kotlinx.coroutines.delay
@@ -179,7 +178,7 @@ fun BodyInfoOfProjectScreen(
                         } else {
                             id_task += 1
                             infoOfProjectViewModel.addTask(project = projectItem,
-                                TaskModel(id_task, adding_item, false),
+                                TaskModelNeTrogat(id_task, adding_item, false),
                                 index = 0)
                             adding_item = ""
                         }

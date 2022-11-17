@@ -52,7 +52,7 @@ fun CardSurvey(
                 var expanded by remember { mutableStateOf(false) }
                 IconButton(onClick = { expanded = true }) {
                     Icon(
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(24.dp),
                         painter = painterResource(id = com.example.antaresapp.R.drawable.more_vert),
                         contentDescription = "Дополнительно")
                 }

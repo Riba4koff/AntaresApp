@@ -54,6 +54,10 @@ sealed class AddItemNews(var titile: String, var screen_route: String) {
     object AddNews : AddItemNews("ScreenAddNews", "add_news")
 }
 
+sealed class AddTask(var title : String, var screen_route: String){
+    object AddNewTask : AddTask("AddTaskScreen", "add_task")
+}
+
 sealed class ProjectItems(var title: String, var screen_route: String) {
     object AddProjectItem : ProjectItems("ScreenAddProject", "add_project")
     object InfoOfProject : ProjectItems("Screen info of project", "info_of_project")

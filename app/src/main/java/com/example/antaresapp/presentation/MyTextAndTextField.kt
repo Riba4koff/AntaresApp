@@ -67,7 +67,7 @@ fun MyTextField(
                 disabledIndicatorColor = Color.Transparent
             ),
             placeholder = {
-                placeholder?.let { Row(modifier = Modifier.fillMaxWidth()){Text(text = it, fontSize = 16.sp)} }
+                placeholder?.let { Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){Text(text = it, fontSize = 16.sp)} }
             }
         )
     }

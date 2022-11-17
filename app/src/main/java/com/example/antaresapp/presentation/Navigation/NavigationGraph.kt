@@ -1,19 +1,11 @@
 package com.example.antaresapp.presentation.Navigation
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
-import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,10 +14,7 @@ import com.example.antaresapp.*
 import com.example.antaresapp.domain.*
 import com.example.antaresapp.domain.models.UserInfo
 import com.example.antaresapp.presentation.view.*
-import com.example.antaresapp.presentation.viewModels.viewModels.OptionListViewModel
-import com.example.antaresapp.presentation.viewModels.viewModels.ProjectViewModel
-import com.example.antaresapp.presentation.viewModels.viewModels.ScreenModelsViewModel
-import com.example.antaresapp.ui.theme.myColor
+import com.example.antaresapp.presentation.viewModels.viewModels.*
 
 @SuppressLint("ComposableDestinationInComposeScope")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -35,25 +24,35 @@ fun NavigationGraph(
     scaffoldState: ScaffoldState,
     projectViewModel: ProjectViewModel,
     screenModelsViewModel: ScreenModelsViewModel,
-    optionListViewModel: OptionListViewModel = viewModel(factory = OptionListViewModel.Factory),
-    userInfo: UserInfo
+    tasksViewModel: TasksViewModel,
+    subTaskViewModel: SubTaskViewModel,
+    optionListViewModel: OptionListViewModel,
+    userInfo: UserInfo,
 ) {
     NavHost(navController, startDestination = BottomNavItem.News.screen_route) {
-        //Новости - Scaffold сделан
+        //Новости
         composable(BottomNavItem.News.screen_route) {
             NewsFeed(navController = navController, screenModelsViewModel, userInfo, scaffoldState)
         }
-        //Календарь - Scaffold сделан
+        //Календарь
         composable(BottomNavItem.Calendar.screen_route) {
             CalendarScreen(scaffoldState = scaffoldState, navController = navController)
         }
-        //Профиль - Scaffold сделан
+        //Профиль
         composable(BottomNavItem.Profile.screen_route) {
             ProfileScreen(userInfo, scaffoldState, navController)
         }
         //Задачи
-        composable(MenuNavigationItems.Tasks.screen_route){
-
+        composable(MenuNavigationItems.Tasks.screen_route) {
+            TasksScreenNavigation(navController = navController,
+                tasksViewModel = tasksViewModel,
+                scaffoldState = scaffoldState)
+        }
+        //Добавить задачу
+        composable(AddTask.AddNewTask.screen_route) {
+            AddTaskScreenNavigation(navController = navController,
+                subTaskViewModel = subTaskViewModel,
+                taskViewModel = tasksViewModel)
         }
         //Проекты - Scaffold сделан
         /*composable(MenuNavigationItems.Projects.screen_route) {
@@ -64,37 +63,37 @@ fun NavigationGraph(
                 scaffoldState
             )
         }*/
-        //Добавить проект - не надо
+        //Добавить проект
         composable(ProjectItems.AddProjectItem.screen_route) {
             InsertProjectItemScreen(
                 navController = navController,
                 scaffoldState = scaffoldState,
                 viewModel = projectViewModel)
         }
-        //Подробная информация о проекте   -  не надо
+        //Подробная информация о проекте
         composable(ProjectItems.InfoOfProject.screen_route) {
             InfoOfProjectScreen(
                 navController = navController,
                 projectItem = projectViewModel.getProjectItem(),
                 scaffoldState = scaffoldState)
         }
-        //Финансы - Сделан
+        //Финансы
         composable(MenuNavigationItems.Balance.screen_route) {
             FinanceScreen(scaffoldState, navController)
         }
-        //Настройки сделаны
+        //Настройки
         composable(MenuNavigationItems.Settings.screen_route) {
             SettingsScreen(scaffoldState = scaffoldState, navController = navController)
         }
-        //Обратная связь - сделан
+        //Обратная связь
         composable(MenuNavigationItems.FeedBack.screen_route) {
             FeedBackScreen(scaffoldState, navController)
         }
-        //Добавить новость - не надо
+        //Добавить новость
         composable(AddItemNews.AddNews.screen_route) {
             AddNews(navController, scaffoldState, userInfo = UserInfo(), screenModelsViewModel)
         }
-        //Создать опрос - не надо
+        //Создать опрос
         composable(Survey._Survey.screen_route) {
             AddSurvey(
                 navController = navController,
@@ -108,9 +107,9 @@ fun NavigationGraph(
         composable(MenuNavigationItems.Exit.screen_route) {
             SignOutConfirmation(navController = navController)
         }
-        //Экран входа - не надо
+        //Экран входа
         composable(Login.LogIn.screen_route) {
-            LogInScreen()
+            LogInScreen(navController)
         }
     }
 }
