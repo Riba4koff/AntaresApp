@@ -51,15 +51,19 @@ fun NavigationGraph(
         composable(BottomNavItem.Profile.screen_route) {
             ProfileScreen(userInfo, scaffoldState, navController)
         }
+        //Задачи
+        composable(MenuNavigationItems.Tasks.screen_route){
+
+        }
         //Проекты - Scaffold сделан
-        composable(MenuNavigationItems.Projects.screen_route) {
+        /*composable(MenuNavigationItems.Projects.screen_route) {
             ShowListProject(
                 navController = navController,
                 viewModel = projectViewModel,
                 user = userInfo,
                 scaffoldState
             )
-        }
+        }*/
         //Добавить проект - не надо
         composable(ProjectItems.AddProjectItem.screen_route) {
             InsertProjectItemScreen(

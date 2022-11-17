@@ -12,8 +12,6 @@ import com.example.antaresapp.presentation.viewModels.viewModels.ScreenModelsVie
 import com.example.antaresproject.StartApp
 
 class MainActivity : ComponentActivity() {
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

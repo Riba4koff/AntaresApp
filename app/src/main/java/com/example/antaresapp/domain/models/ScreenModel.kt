@@ -10,7 +10,11 @@ sealed class ScreenModel() {
         val name: String? = "name",
         val surname: String? = "surname",
         val date: String? = "dd.mm.yyyy",
-        val listOptionItem: List<OptionModel>
+        val listOptionItem: List<OptionModel>,
+        var showRadioBoolean: Boolean ?= true,
+        var refreshCountVotes : Int ?= 0,
+        var allow_click : Boolean ?= true,
+        var lastChosenElement : Int ?= -1
     ) : ScreenModel()
 
     data class NewsItem(

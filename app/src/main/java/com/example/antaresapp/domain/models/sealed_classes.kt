@@ -34,6 +34,7 @@ sealed class MenuNavigationItems(
     object News :
         MenuNavigationItems("Новостная лента", "News item", R.drawable.icon_news_bottom_navigation, "news")
 
+    object Tasks : MenuNavigationItems("Задачи", "Tasks", R.drawable.tasks, "tasks")
     object Projects :
         MenuNavigationItems("Проекты", "Project item", R.drawable.projects, "projects")
 

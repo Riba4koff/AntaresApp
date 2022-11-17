@@ -32,7 +32,8 @@ fun DrawerNavigation(
 ) {
     val listOfMenuItems = listOf(
         MenuNavigationItems.Profile,
-        MenuNavigationItems.Projects,
+        //MenuNavigationItems.Projects,
+        MenuNavigationItems.Tasks,
         MenuNavigationItems.Calendar,
         MenuNavigationItems.Balance,
         MenuNavigationItems.News,

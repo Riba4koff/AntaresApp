@@ -63,7 +63,7 @@ class ScreenModelsViewModel(
                 optionList[i].percent = 0f
             }
             else {
-                percent = ((optionList[i].votes / survey.votes) * 100).toFloat()
+                percent = (optionList[i].votes).toFloat() / (survey.votes).toFloat()
                 optionList[i].percent = percent
             }
         }
@@ -77,7 +77,7 @@ class ScreenModelsViewModel(
     }
 
     fun getPercent(optionList: List<OptionModel>, index: Int) : Float{
-        return optionList[index].percent!!.toFloat()
+        return optionList[index].percent!! * 100.toFloat()
     }
 
     companion object{

@@ -98,7 +98,6 @@ fun NewsFeedScroll(
     screenModelsViewModel: ScreenModelsViewModel,
     navController: NavController,
 ) {
-
     val stateModelList by screenModelsViewModel.dataScreenModelList.observeAsState()
 
     Column(modifier = Modifier.fillMaxHeight()) {

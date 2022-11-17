@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -22,7 +23,7 @@ import com.example.antaresapp.domain.models.ScreenModel
 import com.example.antaresapp.domain.models.UserInfo
 import com.example.antaresapp.domain.models.UserRights
 import com.example.antaresapp.presentation.viewModels.viewModels.ScreenModelsViewModel
-import com.example.antaresapp.ui.theme.fontFamilyRoboto
+import com.example.antaresapp.ui.theme.*
 
 //Вид опроса в новостной ленте
 @Composable
@@ -35,10 +36,10 @@ fun CardSurvey(
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(surveyInfo.listOptionItem[0]) }
     var chosenItem by remember { mutableStateOf(-1) }
-    var allow_click = true
-    var showRadioButton = true
+    var allow_click by remember { mutableStateOf(surveyInfo.allow_click) }
+    var showRadioButton by remember { mutableStateOf(surveyInfo.showRadioBoolean!!) }
     var indexRemoved: Int = 0
-    var refreshCountVotes by remember { mutableStateOf(0) }
+    var refreshCountVotes by remember { mutableStateOf(surveyInfo.refreshCountVotes) }
 
     Card(modifier = modifier
         .fillMaxWidth()
@@ -65,17 +66,22 @@ fun CardSurvey(
                         modifier = Modifier
                             .padding(10.dp)
                             .clickable {
-                                if (!allow_click) {
+                                if (!allow_click!!) {
                                     //Разрешает нажимать на "применить"
                                     allow_click = true
+                                    surveyInfo.allow_click = allow_click
                                     //Показывает RadioButton
                                     showRadioButton = true
+                                    surveyInfo.showRadioBoolean = showRadioButton
                                     //Удаляет элемент
                                     viewModel.deleteVotes(indexRemoved, surveyInfo)
                                     //Находит новые проценты
-                                    viewModel.findPercent(surveyInfo.listOptionItem, surveyInfo)
+                                    //viewModel.findPercent(surveyInfo.listOptionItem, surveyInfo)
                                     expanded = false
                                     refreshCountVotes = surveyInfo.votes
+                                    surveyInfo.refreshCountVotes = refreshCountVotes
+
+                                    surveyInfo.listOptionItem[surveyInfo.lastChosenElement!!].selected = false
                                 }
                             }
                     )
@@ -159,30 +165,30 @@ fun CardSurvey(
                     Card(modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 4.dp, bottom = 4.dp),
-                        elevation = 2.dp,
-                        shape = RoundedCornerShape(15.dp)) {
-
+                        backgroundColor = (if (item.selected!!) selectedOptionColor else unSelectedOptionColor)) {
                         Row(modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically) {
                             Row(modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically) {
                                 Row(
                                     modifier = Modifier
-                                        .fillMaxWidth(0.9f)
+                                        .fillMaxWidth(0.85f)
                                         .padding(8.dp)
                                         .selectable(
                                             selected = (item == selectedOption),
                                             onClick = {
-                                                if (allow_click) {
+                                                if (allow_click!!) {
                                                     chosenItem = viewModel.getIndex(item,
                                                         surveyInfo.listOptionItem)
                                                     onOptionSelected(item)
+                                                    surveyInfo.lastChosenElement = chosenItem
                                                 }
                                             },
                                         ),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     AnimatedVisibility(visible = showRadioButton) {
+                                        //todo: Кнопка для выбора варианта
                                         RadioButton(
                                             selected = (viewModel.getIndex(item,
                                                 surveyInfo.listOptionItem) == chosenItem),
@@ -191,52 +197,59 @@ fun CardSurvey(
                                     }
                                     Text(text = item.option,
                                         modifier = Modifier.padding(4.dp))
-                                    Text(text = ":    " + viewModel.getPercent(surveyInfo.listOptionItem,
-                                        viewModel.getIndex(item, surveyInfo.listOptionItem)).toInt()
-                                        .toString() + "%")
                                     //Spacer(modifier = Modifier.padding(start = 160.dp))
                                 }
-                                AnimatedVisibility(visible = (viewModel.getIndex(item,
-                                    surveyInfo.listOptionItem) == chosenItem),
-                                    exit = fadeOut(animationSpec = tween(10)),
-                                    enter = fadeIn(animationSpec = tween(10))
-                                ) {
-                                    IconButton(modifier = Modifier
-                                        .padding(end = 16.dp)
-                                        .size(20.dp), onClick = {
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                                    AnimatedVisibility(visible = (viewModel.getIndex(item,
+                                        surveyInfo.listOptionItem) == chosenItem),
+                                        exit = fadeOut(animationSpec = tween(10)),
+                                        enter = fadeIn(animationSpec = tween(10))
+                                    ) {
+                                        //todo: Здесь сделана кнопка для подтверждения выбора
+                                        IconButton(modifier = Modifier
+                                            .padding(end = 16.dp)
+                                            .size(20.dp), onClick = {
 
-                                        //При нажатии расчитывается процентаж и блокируются другие варианты,
-                                        //Потом добавлю "Отмена голоса"
-                                        //Блокировка делается с помощью allow_click, изначально равен true
-                                        //После нажатия на выбранный элемент и нажатии на галочку
-                                        //allow_click = false -> выбор больше невозможен
-                                        allow_click = false
+                                            //При нажатии расчитывается процентаж и блокируются другие варианты
+                                            //Блокировка выбора делается с помощью allow_click, изначально равен true
+                                            //После нажатия на выбранный элемент и нажатии на галочку
+                                            //allow_click = false -> выбор больше невозможен
+                                            allow_click = false
+                                            surveyInfo.allow_click = allow_click
 
-                                        //Убираем левую кнопку
-                                        showRadioButton = false
+                                            //Убираем левую кнопку
+                                            showRadioButton = false
+                                            surveyInfo.showRadioBoolean = showRadioButton
 
-                                        //Добавляем при нажатии количество проголосовавших
-                                        viewModel.addVotes(viewModel.getIndex(item,
-                                            surveyInfo.listOptionItem), surveyInfo)
-                                        indexRemoved =
-                                            viewModel.getIndex(item, surveyInfo.listOptionItem)
+                                            //Добавляем при нажатии количество проголосовавших
+                                            viewModel.addVotes(viewModel.getIndex(item,
+                                                surveyInfo.listOptionItem), surveyInfo)
+                                            indexRemoved =
+                                                viewModel.getIndex(item, surveyInfo.listOptionItem)
 
-                                        //Поиск процентов
-                                        viewModel.findPercent(surveyInfo.listOptionItem,
-                                            surveyInfo)
+                                            //Поиск процентов
+                                            viewModel.findPercent(surveyInfo.listOptionItem, surveyInfo)
 
-                                        refreshCountVotes = surveyInfo.votes
+                                            refreshCountVotes = surveyInfo.votes
+                                            surveyInfo.refreshCountVotes = refreshCountVotes
 
-                                        //выбранный элемент равен -1 и не равен текущему item
-                                        //Что позволяет скрыть IconButton
-                                        chosenItem = -1
+                                            //выбранный элемент равен -1 и не равен текущему item
+                                            //Что позволяет скрыть IconButton
+                                            chosenItem = -1
 
-                                    }) {
-                                        Icon(modifier = Modifier.size(20.dp),
-                                            painter = painterResource(id = com.example.antaresapp.R.drawable.done),
-                                            contentDescription = "done")
+                                            item.selected = true
+
+                                        }) {
+                                            Icon(modifier = Modifier.size(20.dp),
+                                                painter = painterResource(id = com.example.antaresapp.R.drawable.done),
+                                                contentDescription = "done")
+                                        }
                                     }
-
+                                    AnimatedVisibility(visible = !allow_click!!) {
+                                        Text(text = viewModel.getPercent(surveyInfo.listOptionItem,
+                                            viewModel.getIndex(item, surveyInfo.listOptionItem)).toInt()
+                                            .toString() + "%")
+                                    }
                                 }
                             }
                         }

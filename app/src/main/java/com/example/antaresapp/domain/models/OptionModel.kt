@@ -4,5 +4,6 @@ data class OptionModel(
     val id: Int,
     var option : String,
     var votes : Int,
-    var percent : Float ?= 0f
+    var percent : Float ?= 0f,
+    var selected : Boolean ?= false
 )
