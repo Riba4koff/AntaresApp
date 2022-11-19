@@ -53,8 +53,7 @@ fun DrawerBody(
             }
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .clickable {
+                .clickable(onClick = {
                     scope.launch {
                         closeDrawer()
                     }
@@ -67,16 +66,18 @@ fun DrawerBody(
                         launchSingleTop = true
                         restoreState = true
                     }
-                }, verticalAlignment = Alignment.CenterVertically) {
-                Icon(modifier = Modifier.size(30.dp),
-                    painter = painterResource(id = item.icon),
-                    contentDescription = item.description)
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = item.title,
-                    fontFamily = fontFamilyRoboto,
-                    fontSize = 18.sp
-                )
+                }), verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.fillMaxWidth().padding(16.dp)){
+                    Icon(modifier = Modifier.size(30.dp),
+                        painter = painterResource(id = item.icon),
+                        contentDescription = item.description)
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = item.title,
+                        fontFamily = fontFamilyRoboto,
+                        fontSize = 18.sp
+                    )
+                }
             }
             Divider(modifier = Modifier.padding(end = 48.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),

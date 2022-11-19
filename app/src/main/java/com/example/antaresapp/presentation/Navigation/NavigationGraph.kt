@@ -5,8 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -49,10 +47,17 @@ fun NavigationGraph(
                 scaffoldState = scaffoldState)
         }
         //Добавить задачу
-        composable(AddTask.AddNewTask.screen_route) {
+        composable(Task.AddTask.screen_route) {
             AddTaskScreenNavigation(navController = navController,
                 subTaskViewModel = subTaskViewModel,
                 taskViewModel = tasksViewModel)
+        }
+        //Информация о задаче
+        composable(Task.Info.screen_route){
+            InfoAboutTask(navController = navController,
+                taskModel = tasksViewModel.getTask(),
+                tasksViewModel = tasksViewModel,
+                subTaskViewModel = subTaskViewModel)
         }
         //Проекты - Scaffold сделан
         /*composable(MenuNavigationItems.Projects.screen_route) {

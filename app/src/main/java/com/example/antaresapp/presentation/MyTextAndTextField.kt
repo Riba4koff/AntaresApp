@@ -27,7 +27,8 @@ fun MyTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit = {},
-    placeholder: String ?= null
+    placeholder: String ?= null,
+    horizontalArrangement : Arrangement.Horizontal = Arrangement.Start
 ) {
     val focus = LocalFocusManager.current
     when (value) {
@@ -67,7 +68,7 @@ fun MyTextField(
                 disabledIndicatorColor = Color.Transparent
             ),
             placeholder = {
-                placeholder?.let { Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){Text(text = it, fontSize = 16.sp)} }
+                placeholder?.let { Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = horizontalArrangement){Text(text = it, fontSize = 16.sp)} }
             }
         )
     }

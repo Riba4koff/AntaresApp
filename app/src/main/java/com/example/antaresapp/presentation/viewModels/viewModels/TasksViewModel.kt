@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.antaresapp.data.RepositoryImpl.ScreenModelRepositoryImpl
 import com.example.antaresapp.data.RepositoryImpl.TaskRepositoryImpl
 import com.example.antaresapp.data.storage.ScreenModelStorage.ScreenModelStorage
+import com.example.antaresapp.domain.models.SubTaskModel
 import com.example.antaresapp.domain.models.TaskModel
 import com.example.antaresapp.domain.repository.TasksRepository
 import com.example.antaresapp.domain.useCase.ProjectsUseCase.SaveSurveyUseCase
@@ -30,6 +31,14 @@ class TasksViewModel(
     fun deleteTask(taskModel: TaskModel){
         tasksRepository.removeTask(taskModel)
         _dataListTasksModel.postValue(_dataListTasksModel.value)
+    }
+
+    fun findProgress(listSubTaskModel: List<SubTaskModel>) : Float{
+        var progress = 0f
+        for (item in listSubTaskModel){
+            if (item.state) progress += 1f / (listSubTaskModel.size).toFloat()
+        }
+        return progress
     }
 
     fun setTask(taskModel: TaskModel){

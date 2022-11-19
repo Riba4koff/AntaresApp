@@ -1,7 +1,6 @@
 package com.example.antaresapp
 
 
-import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
@@ -13,9 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import com.example.antaresapp.domain.AddItemNews
 import com.example.antaresapp.domain.BottomNavItem
 import com.example.antaresapp.domain.models.ScreenModel
 import com.example.antaresapp.domain.models.UserInfo

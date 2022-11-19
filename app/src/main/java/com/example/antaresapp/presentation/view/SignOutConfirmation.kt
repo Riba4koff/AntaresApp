@@ -24,9 +24,7 @@ fun SignOutConfirmation(
     val openDialog = remember { mutableStateOf(true) }
     if (openDialog.value) {
         AlertDialog(
-            onDismissRequest = {
-                openDialog.value = false
-            },
+            onDismissRequest = {},
             title = { Text(text = "Подтверждение действия") },
             text = { Text("Вы действительно хотите выйти из аккаунта?") },
             buttons = {

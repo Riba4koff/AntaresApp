@@ -18,14 +18,12 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.antaresapp.AnimationBox
 import com.example.antaresapp.MyTextField
 import com.example.antaresapp.R
-import com.example.antaresapp.domain.AddTask
 import com.example.antaresapp.domain.MenuNavigationItems
 import com.example.antaresapp.domain.models.SubTaskModel
 import com.example.antaresapp.domain.models.TaskModel
@@ -34,7 +32,6 @@ import com.example.antaresapp.presentation.viewModels.viewModels.SubTaskViewMode
 import com.example.antaresapp.presentation.viewModels.viewModels.TasksViewModel
 import com.example.antaresapp.ui.theme.myColor
 import com.example.antaresapp.ui.theme.subTaskColor
-import com.example.antaresapp.ui.theme.textFieldBackground
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -115,8 +112,7 @@ fun AddTaskScreen(
         item {
             Divider(color = Color.Gray, thickness = 0.5.dp)
             Row(Modifier
-                .fillMaxWidth()
-                .background(textFieldBackground),
+                .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(modifier = Modifier.padding(start = 16.dp),
@@ -128,14 +124,15 @@ fun AddTaskScreen(
                     onValueChange = {
                         nameTask = it
                     },
-                    placeholder = "Введите название")
+                    placeholder = "Введите название",
+                    horizontalArrangement = Arrangement.End
+                )
             }
             Divider(color = Color.Gray, thickness = 0.5.dp)
         }
         item {
             Row(Modifier
-                .fillMaxWidth()
-                .background(textFieldBackground),
+                .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(modifier = Modifier.padding(start = 16.dp),
@@ -147,7 +144,9 @@ fun AddTaskScreen(
                     onValueChange = {
                         description = it
                     },
-                    placeholder = "Введите описание")
+                    placeholder = "Введите описание",
+                    horizontalArrangement = Arrangement.End
+                )
             }
             Divider(color = Color.Gray, thickness = 0.5.dp)
         }

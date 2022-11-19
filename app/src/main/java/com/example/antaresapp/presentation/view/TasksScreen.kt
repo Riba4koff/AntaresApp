@@ -1,18 +1,13 @@
 package com.example.antaresapp.presentation.view
 
-import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -25,17 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.antaresapp.NewsFeedScroll
 import com.example.antaresapp.R
-import com.example.antaresapp.domain.AddTask
+import com.example.antaresapp.domain.Task
 import com.example.antaresapp.domain.models.TaskModel
 import com.example.antaresapp.presentation.Navigation.DrawerNavigation
 import com.example.antaresapp.presentation.viewModels.viewModels.TasksViewModel
 import com.example.antaresapp.ui.theme.completeTaskColor
 import com.example.antaresapp.ui.theme.myColor
 import com.example.antaresapp.ui.theme.unCompleteTaskColor
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -99,7 +91,7 @@ fun TasksScreen(modifier: Modifier, navController: NavController, tasksViewModel
                         contentDescription = "sort")
                 }
                 Button(modifier = Modifier.width(250.dp), onClick = {
-                    navController.navigate(AddTask.AddNewTask.screen_route)
+                    navController.navigate(Task.AddTask.screen_route)
                 }, colors = ButtonDefaults.buttonColors(myColor)) {
                     Text("Добавить задачу")
                 }
@@ -112,7 +104,7 @@ fun TasksScreen(modifier: Modifier, navController: NavController, tasksViewModel
         }
 
         itemsIndexed(stateTasksList!!) { index, item ->
-            CardInfoTask(taskModel = item)
+            CardInfoTask(taskModel = item, tasksViewModel = tasksViewModel, navController)
         }
 
     }
@@ -122,18 +114,20 @@ fun TasksScreen(modifier: Modifier, navController: NavController, tasksViewModel
 @Composable
 fun CardInfoTask(
     taskModel: TaskModel,
+    tasksViewModel: TasksViewModel,
+    navController: NavController
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
-        .clickable {
-
-        }
         .padding(start = 8.dp, end = 8.dp, bottom = 4.dp),
         backgroundColor = if (!taskModel.complete!!) unCompleteTaskColor else completeTaskColor
     ) {
         Row(Modifier
             .fillMaxWidth()
-
+            .clickable(onClick = {
+                tasksViewModel.setTask(taskModel)
+                navController.navigate(Task.Info.screen_route)
+{}            })
             .padding(4.dp)
         ) {
             Row(Modifier.fillMaxWidth(0.7f)) {

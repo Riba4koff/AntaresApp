@@ -7,7 +7,7 @@ data class TaskModel(
     val executor: String ?= "nickname executor",
     val timeAdding: String ?= "20.12.2020",
     val listSubTasks: List<SubTaskModel>,
-    val progress : Float ?= 0f,
+    var progress : Float ?= 0f,
     var complete : Boolean ?= false
 )
 

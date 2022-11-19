@@ -9,7 +9,7 @@ class TaskRepositoryImpl : TasksRepository {
     private val listTasksModel : SnapshotStateList<TaskModel> = mutableStateListOf()
 
     override fun addTask(taskModel: TaskModel) {
-        listTasksModel.add(taskModel)
+        listTasksModel.add(0, taskModel)
     }
 
     override fun removeTask(taskModel: TaskModel) {
@@ -17,5 +17,4 @@ class TaskRepositoryImpl : TasksRepository {
     }
 
     override fun get(): List<TaskModel> = listTasksModel
-
 }
